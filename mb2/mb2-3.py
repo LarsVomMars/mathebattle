@@ -1,5 +1,7 @@
-from sympy import Symbol, integrate, diff, sympify
+from sympy import Symbol, integrate, diff, sympify, N
 from sympy.solvers import solve
+
+# Simple cli
 
 x = Symbol('x')
 
@@ -16,4 +18,5 @@ TI = integrate(T, (x, ft, t1))
 FI = integrate(f, (x, ft, f1))
 
 res = TI - abs(FI)
-print(res)
+print(N(res))
+print(N(res).round(2))
