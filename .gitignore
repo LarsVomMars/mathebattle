@@ -1,5 +1,7 @@
 venv/
 .vscode/
 .idea/
-*.log
+/**/*.log
 /**/__pycache__/
+test.*
+mathml.html
