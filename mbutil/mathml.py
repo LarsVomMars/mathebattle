@@ -9,6 +9,8 @@ https://www.w3.org/TR/REC-MathML/chap3_1.html
 from bs4 import BeautifulSoup
 from bs4.element import Tag, PageElement
 
+from mbutil.util import sanitize_input
+
 
 class MATHML:
     def __init__(self):
@@ -71,4 +73,4 @@ class MATHML:
         for child in math.children:
             if self.__validate_html(str(child)):
                 eq += self.__add_ast(eq) + self.__methods[child.name](child)
-        return eq
+        return sanitize_input(eq)
