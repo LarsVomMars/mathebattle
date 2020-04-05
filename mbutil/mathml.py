@@ -29,11 +29,11 @@ class MATHML:
         except Exception as e:
             return False
 
-    def __add_ast(self, eq: str):
-        return ("*" if eq[-1] not in "+-*/" else "") if len(eq) > 1 else ""
+    def __add_ast(self, eq: str, np: str) -> str:
+        return "*" if len(eq) > 1 and eq[-1] not in "+-*/" or len(np) > 1 and np[0] not in "+-*/" else ""
 
     def __m(self, m: Tag) -> str:
-        return m.string
+        return m.string.strip()
 
     def __mfrac(self, mfrac: Tag) -> str:
         eq = ""  # a/b
@@ -42,11 +42,11 @@ class MATHML:
             if self.__validate_html(str(child)):
                 if len(eq) == 0:
                     num = self.__methods[child.name](child)
-                    eq += f"({num})" if len(num) > 1 else f"{num}"
+                    eq += "(" + (f"({num})" if len(num) > 1 else f"{num}")
                 else:
                     den = self.__methods[child.name](child)
-                    eq += "/" + (f"({den})" if len(den) > 1 else f"{den}")
-        return eq
+                    eq += "/" + (f"({den})" if len(den) > 1 else f"{den}") + ")"
+        return eq.strip()
 
     def __msup(self, msup: Tag) -> str:
         eq = ""  # a**b
@@ -54,23 +54,25 @@ class MATHML:
         for child in msup.children:
             if self.__validate_html(str(child)):
                 if len(eq) == 0:
-                    num = self.__methods[child.name](child)
-                    eq += f"({num})" if len(num) > 1 else f"{num}"
+                    base = self.__methods[child.name](child)
+                    eq += f"({base})" if len(base) > 1 else f"{base}"
                 else:
-                    den = self.__methods[child.name](child)
-                    eq += "**" + (f"({den})" if len(den) > 1 else f"{den}")
-        return eq
+                    exp = self.__methods[child.name](child)
+                    eq += "**" + (f"({exp})" if len(exp) > 1 else f"{exp}")
+        return eq.strip()
 
     def __mrow(self, mrow: Tag) -> str:
         eq = ""
         for child in mrow.children:
             if self.__validate_html(str(child)):
-                eq += self.__add_ast(eq) + self.__methods[child.name](child)
-        return eq
+                next_part = self.__methods[child.name](child)
+                eq += self.__add_ast(eq, next_part) + next_part
+        return eq.strip()
 
     def parse(self, math: PageElement) -> str:
         eq = ""
         for child in math.children:
             if self.__validate_html(str(child)):
-                eq += self.__add_ast(eq) + self.__methods[child.name](child)
+                next_part = self.__methods[child.name](child)
+                eq += self.__add_ast(eq, next_part) + next_part
         return sanitize_input(eq)
