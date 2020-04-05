@@ -30,7 +30,9 @@ class MATHML:
             return False
 
     def __add_ast(self, eq: str, np: str) -> str:
-        return "*" if len(eq) > 1 and eq[-1] not in "+-*/" or len(np) > 1 and np[0] not in "+-*/" else ""
+        if len(eq) == 0 or len(np) == 0:
+            return ""
+        return "*" if eq[-1] in "0123456789)" and np[0] in "x(" else ""
 
     def __m(self, m: Tag) -> str:
         return m.string.strip()

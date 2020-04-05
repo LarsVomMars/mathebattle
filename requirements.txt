@@ -4,3 +4,4 @@ selenium==3.141.0
 soupsieve==2.0
 sympy==1.5.1
 urllib3==1.25.8
+python-dotenv==0.12.0

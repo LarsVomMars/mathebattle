@@ -1,16 +1,16 @@
+import time
+
+from bs4 import BeautifulSoup
 from sympy import sympify, integrate, Symbol
 from sympy.solvers import solve
 
-from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
-from selenium.webdriver.common.keys import Keys
-from selenium import webdriver
-
-from bs4 import BeautifulSoup
-
-import time
-
-from mbutil.util import sanitize_input, round_res, get_webdriver, open_page
 from mbutil.mathml import MATHML
+from mbutil.util import sanitize_input, round_res, get_webdriver, open_page, select_task
+
+from selenium.webdriver.common.keys import Keys
+
+from dotenv import load_dotenv
+load_dotenv()
 
 
 class Solver:
@@ -33,28 +33,26 @@ class Solver:
     def autosolve():
         mml = MATHML()
         driver = get_webdriver()
-        battle_url = open_page(driver)
+        open_page(driver)
+        battle_url_extension = "9718"
+        while True:
+            open_page(driver, battle_url_extension)
+            time.sleep(1)
+            select_task(driver, 2)
+            time.sleep(1)
 
-        time.sleep(1)
+            div = driver.find_element_by_class_name("exercise_question")
+            soup = BeautifulSoup(div.get_attribute("innerHTML"), "html.parser")
 
-        form = driver.find_element_by_id("EduBattleStartForm")
-        sel = form.find_elements_by_tag_name("input")
-        sel[3].click()  # select 2nd 
-        sel[5].click()  # submit form
-        
-        time.sleep(1)
-        
-        div = driver.find_element_by_class_name("exercise_question")
-        soup = BeautifulSoup(div.get_attribute("innerHTML"), "html.parser")
+            p = soup.p
 
-        p = soup.p
+            math_elems = p.find_all("math")
+            f = sympify(mml.parse(math_elems[1]))
+            g = sympify(mml.parse(math_elems[3]))
 
-        math_elems = p.find_all("math")
-        f = sympify(mml.parse(math_elems[1]))
-        g = sympify(mml.parse(math_elems[3]))
-        
-        print(Solver.__solver(f, g))
+            solution = Solver.__solver(f, g)
 
-        driver.close()
-        # TODO: Solve -> insert
-        pass
+            inp = driver.find_element_by_class_name("value_form").find_element_by_tag_name("input")
+            inp.send_keys(solution)
+            inp.send_keys(Keys.RETURN)
+            time.sleep(1)
