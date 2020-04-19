@@ -22,4 +22,4 @@ class Solver:
 
     @staticmethod
     def autosolve():
-        print("Cannot use autosolver due to unknown parameters!")
+        raise NotImplementedError("Cannot use autosolver due to unknown parameters!")
