@@ -8,8 +8,7 @@ from sympy.solvers import solve
 
 from mbutil.mathml import MATHML
 from mbutil.util import sanitize_input, round_res, get_webdriver, open_page, select_task
-
-load_dotenv()
+from mbutil.autosolver import AutoSolver
 
 
 class Solver:
@@ -30,28 +29,13 @@ class Solver:
 
     @staticmethod
     def autosolve():
-        mml = MATHML()
-        driver = get_webdriver()
-        open_page(driver)
+        load_dotenv()
         battle_url_extension = "9718"
+        task = 2
+        auto_solver = AutoSolver(battle_url_extension, task, [1, 3])
         while True:
-            open_page(driver, battle_url_extension)
-            time.sleep(1)
-            select_task(driver, 2)
-            time.sleep(1)
-
-            div = driver.find_element_by_class_name("exercise_question")
-            soup = BeautifulSoup(div.get_attribute("innerHTML"), "html.parser")
-
-            p = soup.p
-
-            math_elems = p.find_all("math")
-            f = sympify(mml.parse(math_elems[1]))
-            g = sympify(mml.parse(math_elems[3]))
-
-            solution = Solver.__solver(f, g)
-
-            inp = driver.find_element_by_class_name("value_form").find_element_by_tag_name("input")
-            inp.send_keys(solution)
-            inp.send_keys(Keys.RETURN)
-            time.sleep(1)
+            elms = auto_solver.start()
+            f = sympify(elms[0])
+            g = sympify(elms[1])
+            res = Solver.__solver(f, g)
+            auto_solver.send(res)

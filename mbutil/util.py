@@ -3,8 +3,10 @@ import time
 from os import getenv as ge
 
 from selenium import webdriver
-from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from sympy import N
+
+
+# import webbrowser
 
 
 def sanitize_input(eq: str):
@@ -28,18 +30,15 @@ def open_page(driver, url_ext: str = None):
 
 
 def get_webdriver():
-    # TODO: Driver for other browsers …
-    # TODO: None Linux compatibility
-    binary = FirefoxBinary("/usr/bin/firefox")
-    driver = webdriver.Firefox(firefox_binary=binary)
-    return driver
+    # browser_name = webbrowser.get()  # TODO: Use for auto browser detection - Or use env
+    return webdriver.Firefox()
 
 
 def select_task(driver, num: int):
     form = driver.find_element_by_id("EduBattleStartForm")
     sel = form.find_elements_by_tag_name("input")
     sel[1 + num].click()
-    sel[5].click()
+    sel[-1].click()
 
 
 def login(driver):
