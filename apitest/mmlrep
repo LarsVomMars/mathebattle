@@ -1,0 +1,3 @@
+#!/bin/bash
+
+curl  --request POST 'https://mathebattle.de/edu_randomtasks/show_term' -H 'Content-Type: application/json' -d '{"inp_term_str": "x^2+3/2","x_str":"x"}'
