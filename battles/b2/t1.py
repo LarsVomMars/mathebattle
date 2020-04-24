@@ -22,4 +22,5 @@ class Solver:
 
     @staticmethod
     def autosolve():
+        # U prob could read from script tags - point var
         raise NotImplementedError("Cannot use autosolver due to unknown parameters!")

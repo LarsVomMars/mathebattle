@@ -28,7 +28,7 @@ class AutoSolver:
 
         div = self.__driver.find_element_by_class_name("exercise_question")
         soup = BeautifulSoup(div.get_attribute("innerHTML"), "html.parser")
-        math_elements = soup.p.find_all("math")
+        math_elements = soup.find_all("math")
 
         return [self.__mml.parse(math_elements[i]) for i in self.__element_nums]
 

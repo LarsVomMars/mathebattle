@@ -1,6 +1,8 @@
+from dotenv import load_dotenv
 from sympy import sympify, integrate, Symbol
 from sympy.solvers import solve
 
+from mbutil.autosolver import AutoSolver
 from mbutil.util import sanitize_input, round_res
 
 
@@ -20,5 +22,15 @@ class Solver:
 
     @staticmethod
     def autosolve():
-        # TODO: Implement
-        raise NotImplementedError("TODO")
+        raise NotImplementedError("Currently working on :)")
+        load_dotenv()
+        battle_url_extension = "8518"
+        task = 1
+        auto_solver = AutoSolver(battle_url_extension, task, [0, 1])
+        while True:
+            # Why the heck are they using different page layouts
+            elms = auto_solver.start()
+            f = sympify(elms[0])
+            g = sympify(elms[1])
+            res = Solver.__solver(f, g)
+            auto_solver.send(res)

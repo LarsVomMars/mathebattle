@@ -1,14 +1,9 @@
-import time
-
-from bs4 import BeautifulSoup
 from dotenv import load_dotenv
-from selenium.webdriver.common.keys import Keys
 from sympy import sympify, integrate, Symbol
 from sympy.solvers import solve
 
-from mbutil.mathml import MATHML
-from mbutil.util import sanitize_input, round_res, get_webdriver, open_page, select_task
 from mbutil.autosolver import AutoSolver
+from mbutil.util import sanitize_input, round_res
 
 
 class Solver:

@@ -1,6 +1,8 @@
+from dotenv import load_dotenv
 from sympy import sympify, integrate, Symbol, diff
 from sympy.solvers import solve
 
+from mbutil.autosolver import AutoSolver
 from mbutil.util import sanitize_input, round_res
 
 
@@ -26,4 +28,14 @@ class Solver:
 
     @staticmethod
     def autosolve():
-        pass
+        raise NotImplementedError("Not yet implemented")
+        load_dotenv()
+        battle_url_extension = "9718"
+        task = 3
+        auto_solver = AutoSolver(battle_url_extension, task, [1, 3])
+        while True:
+            elms = auto_solver.start()
+            f = sympify(elms[0])
+            g = sympify(elms[1])
+            res = Solver.__solver(f, g)
+            auto_solver.send(res)
