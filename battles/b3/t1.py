@@ -31,6 +31,8 @@ class Solver:
             div = auto_solver.start()
             math_elements = div.find_all('math')
             f = sympify(mml.parse(math_elements[1]))
-            a, b = [sympify(sanitize_input(i)) for i in div.p.split('[')[-1].split(']')[0].split(',')]
+            splits = str(div.p).split('[')[-1].split(']')[0].split(',')
+            print(splits)
+            a, b = [sympify(sanitize_input(i)) for i in splits]
             res = Solver.__solver(f, a, b)
             auto_solver.send(res)

@@ -8,3 +8,7 @@ Currently only `Firefox` is supported which also requires the geckodriver
 
 ## Disclaimer
 I don't take any responsibilities for wrong solutions :)
+
+### Todo's
+- mml msqrt
+- pi
