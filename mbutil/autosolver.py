@@ -30,7 +30,8 @@ class AutoSolver:
         return soup
 
     def send(self, result):
-        inp = self.__driver.find_element_by_class_name("value_form").find_element_by_tag_name("input")
+        # inp = self.__driver.find_element_by_class_name("value_form").find_element_by_tag_name("input")
+        inp = self.__driver.find_element_by_css_selector('input[type="text"]')
         inp.send_keys(result)
         inp.send_keys(Keys.RETURN)
         sleep(1)

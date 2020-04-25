@@ -29,7 +29,7 @@ class Solver:
         load_dotenv()
         mml = MATHML()
         task = 2
-        auto_solver = AutoSolver(config.BATTLE_1_EXTENSION, task)
+        auto_solver = AutoSolver(config.BATTLE_2_EXTENSION, task)
         while True:
             div = auto_solver.start()
             math_elements = div.find_all('math')
