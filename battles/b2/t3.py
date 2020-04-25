@@ -2,7 +2,9 @@ from dotenv import load_dotenv
 from sympy import sympify, integrate, Symbol, diff
 from sympy.solvers import solve
 
+import config
 from mbutil.autosolver import AutoSolver
+from mbutil.mathml import MATHML
 from mbutil.util import sanitize_input, round_res
 
 
@@ -28,14 +30,14 @@ class Solver:
 
     @staticmethod
     def autosolve():
-        raise NotImplementedError("Not yet implemented")
         load_dotenv()
-        battle_url_extension = "9718"
+        mml = MATHML()
         task = 3
-        auto_solver = AutoSolver(battle_url_extension, task, [1, 3])
+        auto_solver = AutoSolver(config.BATTLE_1_EXTENSION, task)
         while True:
-            elms = auto_solver.start()
-            f = sympify(elms[0])
-            g = sympify(elms[1])
-            res = Solver.__solver(f, g)
+            div = auto_solver.start()
+            math_elements = div.find_all('math')
+            f = sympify(mml.parse(math_elements[1]))
+            poi_t = sympify(div.find_all('mrow')[-1].text)
+            res = Solver.__solver(f, poi_t)
             auto_solver.send(res)

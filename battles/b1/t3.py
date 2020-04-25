@@ -1,6 +1,10 @@
+from dotenv import load_dotenv
 from sympy import sympify, integrate, Symbol
 from sympy.solvers import solve
 
+import config
+from mbutil.autosolver import AutoSolver
+from mbutil.mathml import MATHML
 from mbutil.util import sanitize_input, round_res
 
 
@@ -26,4 +30,5 @@ class Solver:
 
     @staticmethod
     def autosolve():
-        raise NotImplementedError("Cannot use autosolver due to unknown parameters!")
+        # Check if script tags contain data
+        raise NotImplementedError('Currently working on')

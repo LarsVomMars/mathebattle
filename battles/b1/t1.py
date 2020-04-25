@@ -2,7 +2,9 @@ from dotenv import load_dotenv
 from sympy import sympify, integrate, Symbol
 from sympy.solvers import solve
 
+import config
 from mbutil.autosolver import AutoSolver
+from mbutil.mathml import MATHML
 from mbutil.util import sanitize_input, round_res
 
 
@@ -22,15 +24,14 @@ class Solver:
 
     @staticmethod
     def autosolve():
-        raise NotImplementedError("Currently working on :)")
         load_dotenv()
-        battle_url_extension = "8518"
+        mml = MATHML()
         task = 1
-        auto_solver = AutoSolver(battle_url_extension, task, [0, 1])
+        auto_solver = AutoSolver(config.BATTLE_1_EXTENSION, task)
         while True:
-            # Why the heck are they using different page layouts
-            elms = auto_solver.start()
-            f = sympify(elms[0])
-            g = sympify(elms[1])
+            div = auto_solver.start()
+            math_elements = div.find_all('math')
+            f = sympify(mml.parse(math_elements[0]))
+            g = sympify(mml.parse(math_elements[1]))
             res = Solver.__solver(f, g)
             auto_solver.send(res)
