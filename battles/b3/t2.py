@@ -12,8 +12,8 @@ class Solver:
     @staticmethod
     def __solver(f, a, b):
         x = Symbol("x")
-        volume = (1/(b-a)) * integrate(f, (x, a, b))
-        return round_res(volume)
+        mean = (1/(b-a)) * integrate(f, (x, a, b))
+        return round_res(mean)
 
     @staticmethod
     def cli():
