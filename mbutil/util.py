@@ -5,7 +5,7 @@ from os import getenv as ge
 from selenium import webdriver
 from sympy import N
 
-
+from larsmathlib.geometry import Point, Vector
 # import webbrowser
 
 
@@ -45,3 +45,13 @@ def login(driver):
     driver.find_element_by_id("UserUsername").send_keys(ge("MB_USERNAME"))
     driver.find_element_by_id("UserPassword").send_keys(ge("MB_PASSWORD"))
     driver.find_element_by_class_name("submit").find_element_by_tag_name("input").click()
+
+
+def create_point(s: str) -> Point:
+    split = s.split(',')
+    return Point(float(split[0]), float(split[1]), float(split[2]))
+
+
+def create_vector(s: str) -> Vector:
+    split = s.split(',')
+    return Vector(float(split[0]), float(split[1]), float(split[2]))

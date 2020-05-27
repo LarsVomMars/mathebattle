@@ -13,6 +13,7 @@ while True:
         break
     except ModuleNotFoundError as e:
         os.system('cls' if os.name == 'nt' else 'clear')
+        print(e)
         print(f"Battle {battle_id}|{task_id} not found - Retry!")
     except Exception as e:
         print(e)
