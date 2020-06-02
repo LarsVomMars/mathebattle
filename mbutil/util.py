@@ -1,5 +1,6 @@
 import re
 import time
+from time import sleep
 from os import getenv as ge
 
 from selenium import webdriver
@@ -8,6 +9,9 @@ from sympy import N
 from larsmathlib.geometry import Point, Vector
 # import webbrowser
 
+import asyncio
+
+from pyppeteer import launch
 
 def sanitize_input(eq: str):
     return eq.replace("^", "**").replace("e", "E")
@@ -16,6 +20,18 @@ def sanitize_input(eq: str):
 def round_res(res) -> str:
     return str(N(res).round(2))
 
+
+async def mb_login(browser):
+    page = await browser.newPage()
+    await page.goto('https://mathebattle.de/users/login')
+    sleep(1)
+    await (await page.querySelector('#UserUsername')).type(ge("MB_USERNAME"))
+    await (await page.querySelector('#UserPassword')).type(ge("MB_PASSWORD"))
+    await (await page.querySelector('.submit input')).click()
+
+
+async def open_browser():
+    return await launch(headless=ge('MB_HEADLESS'))
 
 def open_page(driver, url_ext: str = None):
     if url_ext is None:
@@ -27,6 +43,8 @@ def open_page(driver, url_ext: str = None):
     else:
         driver.get(f"https://mathebattle.de/edu_battles/start/{url_ext}")
     time.sleep(1)
+
+
 
 
 def get_webdriver():

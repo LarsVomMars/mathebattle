@@ -1,4 +1,3 @@
-from dotenv import load_dotenv
 from sympy import sympify, integrate, Symbol
 from sympy.solvers import solve
 
@@ -23,15 +22,13 @@ class Solver:
         print(f"Result: {Solver.__solver(f, g)}")
 
     @staticmethod
-    def autosolve():
-        load_dotenv()
+    async def autosolve():
         mml = MATHML()
-        task = 1
-        auto_solver = AutoSolver(config.BATTLE_1_EXTENSION, task)
+        auto_solver = AutoSolver(config.BATTLE_1_EXTENSION, 1)
         while True:
-            div = auto_solver.start()
-            math_elements = div.find_all('math')
+            div = await auto_solver.start()
+            math_elements = await div.J('math')
             f = sympify(mml.parse(math_elements[0]))
             g = sympify(mml.parse(math_elements[1]))
             res = Solver.__solver(f, g)
-            auto_solver.send(res)
+            await (await div.J('input[type=text]')).type(res)

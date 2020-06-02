@@ -2,6 +2,10 @@
 import os
 import sys
 from importlib import import_module
+import asyncio
+from dotenv import load_dotenv
+
+os.environ["MB_HEADLESS"] = '--headless' in sys.argv  # Production mode - Run browser headless
 
 while True:
     battle_id = input("Battle: ")
@@ -20,6 +24,7 @@ while True:
         sys.exit(1)
 
 if auto_solver.lower() == "y":
-    solver.autosolve()
+    load_dotenv()
+    asyncio.get_event_loop().run_until_complete(solver.autosolve())
 else:
     solver.cli()
