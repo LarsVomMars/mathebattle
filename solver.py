@@ -5,7 +5,7 @@ from importlib import import_module
 import asyncio
 from dotenv import load_dotenv
 
-os.environ["MB_HEADLESS"] = '--headless' in sys.argv  # Production mode - Run browser headless
+os.environ["MB_HEADLESS"] = str('--headless' in sys.argv)  # Production mode - Run browser headless
 
 while True:
     battle_id = input("Battle: ")

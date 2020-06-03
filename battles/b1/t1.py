@@ -1,5 +1,6 @@
 from sympy import sympify, integrate, Symbol
 from sympy.solvers import solve
+from time import sleep
 
 import config
 from mbutil.autosolver import AutoSolver
@@ -26,9 +27,11 @@ class Solver:
         mml = MATHML()
         auto_solver = AutoSolver(config.BATTLE_1_EXTENSION, 1)
         while True:
-            div = await auto_solver.start()
-            math_elements = await div.J('math')
+            page = await auto_solver.start()
+            math_elements = await page.J('math')
             f = sympify(mml.parse(math_elements[0]))
             g = sympify(mml.parse(math_elements[1]))
             res = Solver.__solver(f, g)
-            await (await div.J('input[type=text]')).type(res)
+            await (await page.J('input[type=text]')).type(res)
+            break
+        sleep(10)

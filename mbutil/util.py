@@ -28,41 +28,25 @@ async def mb_login(browser):
     await (await page.querySelector('#UserUsername')).type(ge("MB_USERNAME"))
     await (await page.querySelector('#UserPassword')).type(ge("MB_PASSWORD"))
     await (await page.querySelector('.submit input')).click()
+    return page
 
 
 async def open_browser():
-    return await launch(headless=ge('MB_HEADLESS'))
-
-def open_page(driver, url_ext: str = None):
-    if url_ext is None:
-        driver.get("https://mathebattle.de/users/login")
-        time.sleep(.5)
-        login(driver)
-        while re.match("http[s]://mathebattle.de/users/login", driver.current_url) is not None:
-            time.sleep(1)
-    else:
-        driver.get(f"https://mathebattle.de/edu_battles/start/{url_ext}")
-    time.sleep(1)
+    return await launch(headless=True if ge('MB_HEADLESS', 'False') == 'True' else False)
 
 
+async def open_page(page, url_ext: str):
+    await page.goto(f"https://mathebattle.de/edu_battles/start/{url_ext}")
+    sleep(2)
+    return page
 
 
-def get_webdriver():
-    # browser_name = webbrowser.get()  # TODO: Use for auto browser detection - Or use env
-    return webdriver.Firefox()
-
-
-def select_task(driver, num: int):
-    form = driver.find_element_by_id("EduBattleStartForm")
-    sel = form.find_elements_by_tag_name("input")
-    sel[1 + num].click()
-    sel[-1].click()
-
-
-def login(driver):
-    driver.find_element_by_id("UserUsername").send_keys(ge("MB_USERNAME"))
-    driver.find_element_by_id("UserPassword").send_keys(ge("MB_PASSWORD"))
-    driver.find_element_by_class_name("submit").find_element_by_tag_name("input").click()
+async def select_task(page, num: int):
+    inputs = await page.J('#EduBattleStartForm input')
+    await inputs[1 + num].click()
+    await inputs[-1].click()
+    await page.waitForNavigation()
+    return page
 
 
 def create_point(s: str) -> Point:

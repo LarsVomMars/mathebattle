@@ -3,32 +3,26 @@ from time import sleep
 from bs4 import BeautifulSoup
 
 from mbutil.mathml import MATHML
-from mbutil.util import get_webdriver, open_page, select_task, mb_login, open_browser
+from mbutil.util import open_page, select_task, mb_login, open_browser
 
 from selenium.webdriver.common.keys import Keys
 
 
 class AutoSolver:
     def __init__(self, battle_url_extension: str, task: int):
-        self.browser = await open_browser()
         self.extension = battle_url_extension
         self.task = task
 
-    def __login(self):
-        mb_login(self.browser)
+    async def __login(self):
+        self.browser = await open_browser()
+        self.page = await mb_login(self.browser)
 
-    def start(self) -> BeautifulSoup:
+    async def start(self):
         # Login
-        self.__login()
+        await self.__login()
         # Open battle page
-        page = open_page(self.browser, self.extension)
+        self.page = await open_page(self.page, self.extension)
         sleep(1)
+
         # Open task
-        
-        battle_page = select_task(page, self.task)
-        sleep(1)
-
-
-        soup = BeautifulSoup(div.get_attribute("innerHTML"), "html.parser")
-        return soup
-
+        return await select_task(self.page, self.task)
