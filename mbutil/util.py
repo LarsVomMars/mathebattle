@@ -6,7 +6,7 @@ from os import getenv as ge
 from selenium import webdriver
 from sympy import N
 
-from larsmathlib.geometry import Point, Vector
+from mathew.geometry import Point, Vector
 # import webbrowser
 
 import asyncio

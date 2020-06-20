@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from larsmathlib.geometry import Vector, Point
+from mathew.geometry import Vector, Point
 from math import sqrt
 
 import config
