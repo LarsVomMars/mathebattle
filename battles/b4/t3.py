@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from larsmathlib.geometry import Point
+from mathew.geometry import Point
 from math import sqrt
 
 import config
@@ -16,7 +16,7 @@ class Solver:
             height = sqrt(sl ** 2 - (.5 * base) ** 2)
             return .5 * height * base
 
-        
+
         a = p1.distance(p2)
         b = p2.distance(p3)
         c = p3.distance(p1)
@@ -30,7 +30,7 @@ class Solver:
             res = calculate(c, b)
         else:
             return "Cannot calulate .. :)"
-        
+
         return round_res(res)
 
 
